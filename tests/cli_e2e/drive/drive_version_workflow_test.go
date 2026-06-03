@@ -47,16 +47,7 @@ func TestDriveVersionWorkflow(t *testing.T) {
 		cleanupCtx, cleanupCancel := clie2e.CleanupContext()
 		defer cleanupCancel()
 
-		deleteResult, deleteErr := clie2e.RunCmd(cleanupCtx, clie2e.Request{
-			Args: []string{
-				"drive", "+delete",
-				"--file-token", fileToken,
-				"--type", "file",
-				"--yes",
-			},
-			DefaultAs:  "bot",
-			BinaryPath: "../../../lark-cli",
-		})
+		deleteResult, deleteErr := DeleteDriveResourceAndVerify(cleanupCtx, fileToken, "file", "bot")
 		clie2e.ReportCleanupFailure(parentT, "delete version workflow file "+fileToken, deleteResult, deleteErr)
 	})
 

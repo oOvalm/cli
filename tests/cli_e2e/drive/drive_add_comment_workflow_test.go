@@ -45,15 +45,7 @@ func TestDriveAddCommentMarkdownFileWorkflow(t *testing.T) {
 		cleanupCtx, cleanupCancel := clie2e.CleanupContext()
 		defer cleanupCancel()
 
-		deleteResult, deleteErr := clie2e.RunCmd(cleanupCtx, clie2e.Request{
-			Args: []string{
-				"drive", "+delete",
-				"--file-token", fileToken,
-				"--type", "file",
-				"--yes",
-			},
-			DefaultAs: "bot",
-		})
+		deleteResult, deleteErr := DeleteDriveResourceAndVerify(cleanupCtx, fileToken, "file", "bot")
 		clie2e.ReportCleanupFailure(parentT, "delete file comment target "+fileToken, deleteResult, deleteErr)
 	})
 

@@ -38,10 +38,7 @@ func TestDrive_UploadWorkflow(t *testing.T) {
 			cleanupCtx, cleanupCancel := clie2e.CleanupContext()
 			defer cleanupCancel()
 
-			deleteResult, deleteErr := clie2e.RunCmdWithRetry(cleanupCtx, clie2e.Request{
-				Args:      []string{"drive", "+delete", "--file-token", fileToken, "--type", "file", "--yes"},
-				DefaultAs: "bot",
-			}, clie2e.RetryOptions{})
+			deleteResult, deleteErr := DeleteDriveResourceAndVerify(cleanupCtx, fileToken, "file", "bot")
 			clie2e.ReportCleanupFailure(parentT, "delete drive file "+fileToken, deleteResult, deleteErr)
 		})
 	}

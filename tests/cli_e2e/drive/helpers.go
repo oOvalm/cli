@@ -67,7 +67,7 @@ func DeleteDriveResourceAndVerify(ctx context.Context, token, docType, defaultAs
 	deleteResult, deleteErr := clie2e.RunCmdWithRetry(ctx, clie2e.Request{
 		Args:      []string{"drive", "+delete", "--file-token", token, "--type", docType, "--yes"},
 		DefaultAs: defaultAs,
-	}, clie2e.RetryOptions{})
+	}, driveCleanupRetryOptions())
 	if deleteErr != nil || deleteResult == nil {
 		return deleteResult, deleteErr
 	}
@@ -86,6 +86,14 @@ func DeleteDriveResourceAndVerify(ctx context.Context, token, docType, defaultAs
 		return deleteResult, err
 	}
 	return deleteResult, nil
+}
+
+func driveCleanupRetryOptions() clie2e.RetryOptions {
+	return clie2e.RetryOptions{
+		Attempts:     6,
+		InitialDelay: time.Second,
+		MaxDelay:     5 * time.Second,
+	}
 }
 
 func WaitDriveResourceDeleted(ctx context.Context, token, docType, defaultAs string) error {
